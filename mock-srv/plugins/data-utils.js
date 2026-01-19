@@ -17,7 +17,7 @@ const orderStream = new PassThrough({objectMode: true})
 
 async function * realtimeOrders () {
   for await (const {id, total} of orderStream) {
-    yield JSON.stringify({ id, total });\
+    yield JSON.stringify({ id, total });
   }
 }
 
@@ -44,6 +44,7 @@ function addOrder (id, amount) {
   orders[id].total += amount
   const { total } = orders[id]
   orderStream.write({id, total})
+  return total
 }
 
 const calculateID = (idPrefix, data) => {

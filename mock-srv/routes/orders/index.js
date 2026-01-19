@@ -23,6 +23,13 @@ module.exports = async function (fastify, opts) {
     }
   }
 
+  fastify.post('/:id', async function (request, reply) {
+    const { id } = request.params
+    const { amount } = request.body
+    const total = fastify.addOrder(id, amount)
+    return { id, total }
+  })
+
   fastify.get(
      '/:category',
     { websocket: true },
