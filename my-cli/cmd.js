@@ -18,29 +18,18 @@ const usage = (msg = 'Back office for My App') => {
   console.log('  ids:   my-cli list ids -c=<string> --api<string>')
 }
 
-const noMatches = commist()
-  .register('add order', addOrder)
-  .register('list cats', listCats)
-  .register('list ids', lisIds)
-  .parse(process.argv.slice(2))
-
-id (noMatches) {
-  usage()
-  process.exit(1)
-}
-
-async function addOrder (args) {
+async function addOrder (argv) {
   const args = minimist(argv, {
     alias: { amount: 'n' },
     string: ['api'],
     default: { api: API }
   })
-  if (args._.length <1) {
+  if (args._.length < 1) {
     usage()
     process.exit(1)
   }
 
-  const [id ] = args._
+  const [id] = args._
   const { amount, api } = args
 
   if (Number.isInteger(amount) === false) {
@@ -89,4 +78,15 @@ async function listIds (argv) {
     console.log(err.message)
     process.exit(1)
   }
+}
+
+const noMatches = commist()
+  .register('add order', addOrder)
+  .register('list cats', listCats)
+  .register('list ids', listIds)
+  .parse(process.argv.slice(2))
+
+if (noMatches) {
+  usage()
+  process.exit(1)
 }
